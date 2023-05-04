@@ -1,0 +1,194 @@
+﻿[
+	{
+		"term": "Affinity mapping",
+		"definition": "A process of for organizing qualitative research data based on common themes to identify patterns and uncover common trends in respondents’ attitudes and motivations."
+	},
+	{
+		"term": "Code",
+		"definition": "A descriptive label for a segment of text (words or statements)."
+	},
+	{
+		"term": "Data",
+		"definition": "Facts and figures created by measuring, counting, observing, and describing objects and situations in the world around us. It is the raw material for making information."
+	},
+	{
+		"term": "Data synthesis",
+		"definition": "A systematic review and interpretation of extracted data."
+	},
+	{
+		"term": "Design process",
+		"definition": "A sequence of steps that a product or service team follows to develop a solution to a problem."
+	},
+	{
+		"term": "Design research",
+		"definition": "A compilation of knowledge assembled using a user-focused framework of methods to guide the creation of a product or service."
+	},
+	{
+		"term": "Extreme users",
+		"definition": "Extreme users are those on each side of your users' range."
+	},
+	{
+		"term": "Framing the problem",
+		"definition": "A process of understanding, defining, and prioritizing difficult obstacles and issues."
+	},
+	{
+		"term": "Insights",
+		"definition": "An accurate and deep intuitive understanding of a users’ needs, motivations and actions used in the design process"
+	},
+	{
+		"term": "Journey mapping",
+		"definition": "A visualization of the process that a person goes through in order to accomplish a goal or task, and their interactions with the product or service."
+	},
+	{
+		"term": "Persona",
+		"definition": "A fictional, yet realistic, description of a typical user of a product or service."
+	},
+	{
+		"term": "POV problem statement",
+		"definition": "A structured statement that articulates the problem(s) from various perspectives."
+	},
+	{
+		"term": "Problem space",
+		"definition": "A problem and everything connected to the problem (context, actions, people)."
+	},
+	{
+		"term": "SAT analysis",
+		"definition": "Holistic method of analyzing the system from Structural, Attitudinal, and Transactional perspectives."
+	},
+	{
+		"term": "System",
+		"definition": "An interconnecting network where the interaction of factors produces a variety of outcomes, positive, negative, or neutral."
+	},
+	{
+		"term": "Theme",
+		"definition": "A common thread that appears in multiple user statements"
+	},
+	{
+		"term": "User",
+		"definition": "An individual who uses a product or service to accomplish a task or achieve a goal. A user is a type of stakeholder."
+	},
+	{
+		"term": "User research / UX research",
+		"definition": "A process of discovering the behaviors, motivations, and needs of your users through various qualitative and quantitative research methods."
+	},
+	{
+		"term": "Validation / Invalidation",
+		"definition": "A process of checking or proving that something is true (validation) or false (invalidation)"
+	},
+	{
+		"term": "bias",
+		"definition": ""
+	},
+	{
+		"term": "biased",
+		"definition": ""
+	},
+	{
+		"term": "codes",
+		"definition": ""
+	},
+	{
+		"term": "coding",
+		"definition": ""
+	},
+	{
+		"term": "data synthesis",
+		"definition": ""
+	},
+	{
+		"term": "design research",
+		"definition": ""
+	},
+	{
+		"term": "design research synthesis",
+		"definition": ""
+	},
+	{
+		"term": "extreme users",
+		"definition": ""
+	},
+	{
+		"term": "frame problems",
+		"definition": ""
+	},
+	{
+		"term": "how-might-we statements",
+		"definition": ""
+	},
+	{
+		"term": "hypotheses",
+		"definition": ""
+	},
+	{
+		"term": "hypothesis",
+		"definition": ""
+	},
+	{
+		"term": "metaphoric model",
+		"definition": ""
+	},
+	{
+		"term": "pain point",
+		"definition": ""
+	},
+	{
+		"term": "problem space",
+		"definition": ""
+	},
+	{
+		"term": "research method",
+		"definition": ""
+	},
+	{
+		"term": "research questions",
+		"definition": ""
+	},
+	{
+		"term": "stakeholders",
+		"definition": ""
+	},
+	{
+		"term": "target audience",
+		"definition": ""
+	},
+	{
+		"term": "target user",
+		"definition": ""
+	},
+	{
+		"term": "theme",
+		"definition": ""
+	},
+	{
+		"term": "themes",
+		"definition": ""
+	},
+	{
+		"term": "trends",
+		"definition": ""
+	},
+	{
+		"term": "user experience research",
+		"definition": ""
+	},
+	{
+		"term": "user persona",
+		"definition": ""
+	},
+	{
+		"term": "user range",
+		"definition": ""
+	},
+	{
+		"term": "user research",
+		"definition": ""
+	},
+	{
+		"term": "users",
+		"definition": ""
+	},
+	{
+		"term": "ux research",
+		"definition": ""
+	}
+]

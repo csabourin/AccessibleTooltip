@@ -1,0 +1,78 @@
+﻿[
+	{
+		"term": "Cartographie d'affinité",
+		"definition": "Processus d'organisation des données de recherche qualitative sur la base de thèmes communs afin d'identifier des schémas et de découvrir des tendances communes dans les attitudes et les motivations des personnes interrogées."
+	},
+	{
+		"term": "Code",
+		"definition": "Étiquette descriptive d'un segment de texte (mots ou déclarations)."
+	},
+	{
+		"term": "Données",
+		"definition": "Faits et chiffres créés en mesurant, comptant, observant et décrivant des objets et des situations dans le monde qui nous entoure. C'est la matière première de l'information"
+	},
+	{
+		"term": "Synthèse de données",
+		"definition": "Examen systématique et interprétation des données extraites."
+	},
+	{
+		"term": "Processus de conception",
+		"definition": "Séquence d'étapes qu'une équipe chargée d'un produit ou d'un service suit pour élaborer une solution à un problème."
+	},
+	{
+		"term": "Design research",
+		"definition": "Compilation de connaissances rassemblées à l'aide d'un cadre de méthodes axées sur l'utilisateur pour guider la création d'un produit ou d'un service."
+	},
+	{
+		"term": "Utilisateurs extrêmes",
+		"definition": "Les utilisateurs extrêmes sont ceux qui se trouvent de part et d'autre de la fourchette de vos utilisateurs."
+	},
+	{
+		"term": "Cadrage du problème",
+		"definition": "Processus consistant à comprendre, à définir et à hiérarchiser les obstacles et les problèmes difficiles."
+	},
+	{
+		"term": "Insights",
+		"definition": "Compréhension intuitive précise et approfondie des besoins, motivations et actions d'un utilisateur, utilisée dans le processus de conception"
+	},
+	{
+		"term": "Journey mapping",
+		"definition": "Visualisation du processus par lequel une personne passe pour accomplir un objectif ou une tâche, et de ses interactions avec le produit ou le service."
+	},
+	{
+		"term": "Persona",
+		"definition": "Description fictive, mais réaliste, d'un utilisateur type d'un produit ou d'un service."
+	},
+	{
+		"term": "POV problem statement",
+		"definition": "Une déclaration structurée qui articule le(s) problème(s) selon différentes perspectives."
+	},
+	{
+		"term": "Espace de problèmes",
+		"definition": "Un problème et tout ce qui est lié au problème (contexte, actions, personnes)."
+	},
+	{
+		"term": "Analyse SAT",
+		"definition": "Méthode holistique d'analyse du système du point de vue structurel, attitudinal et transactionnel."
+	},
+	{
+		"term": "Système",
+		"definition": "Réseau interconnecté où l'interaction des facteurs produit une variété de résultats, positifs, négatifs ou neutres."
+	},
+	{
+		"term": "Thème",
+		"definition": "Un fil conducteur qui apparaît dans plusieurs déclarations d'utilisateurs"
+	},
+	{
+		"term": "Utilisateur",
+		"definition": "Personne qui utilise un produit ou un service pour accomplir une tâche ou atteindre un objectif. Un utilisateur est un type de partie prenante."
+	},
+	{
+		"term": "User research / UX research",
+		"definition": "Processus de découverte des comportements, des motivations et des besoins de vos utilisateurs par le biais de diverses méthodes de recherche qualitatives et quantitatives."
+	},
+	{
+		"term": "Validation / Invalidation",
+		"definition": "Processus consistant à vérifier ou à prouver que quelque chose est vrai (validation) ou faux (invalidation)"
+	}
+]
