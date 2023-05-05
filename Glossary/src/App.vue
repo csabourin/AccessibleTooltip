@@ -1,6 +1,6 @@
 <template>
   <div id="glossary-app">
-    <div id="glossary-nav">
+    <nav id="glossary-nav">
       <span
         v-for="letter in alphabet"
         :key="letter"
@@ -11,7 +11,7 @@
       >
         {{ letter.toUpperCase() }}
       </span>
-    </div>
+    </nav>
     <div class="glossary-list">
       <dl id="glossary">
         <template v-for="(entry, index) in filteredGlossary" :key="index">
@@ -89,7 +89,7 @@ export default {
   font-size: 1.5em;
   display: flex;
   flex-wrap: wrap;
-  justify-content: space-between;
+  justify-content: flex-start;
   max-width: 1024px;
   width: 100%;
   margin-bottom: 20px;
