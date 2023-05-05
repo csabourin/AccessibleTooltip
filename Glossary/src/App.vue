@@ -71,10 +71,9 @@ export default {
 };
 </script>
 
-<style scoped>
-#glossary-app {
+<style scoped>#glossary-app {
   font-family: 'Avenir', Helvetica, Arial, sans-serif;
-    margin-top: 10px;
+  margin-top: 10px;
 }
 
 .ln-selected {
@@ -89,14 +88,15 @@ export default {
   background-color: #4e5b73;
   font-size: 1.5em;
   display: flex;
+  flex-wrap: wrap;
   justify-content: space-between;
-  max-width: 640px;
-  width:100%;
+  max-width: 1024px;
+  width: 100%;
   margin-bottom: 20px;
 }
 
 #glossary-nav span {
-  color:#fff;
+  color: #fff;
   background-color: #4e5b73;
   border-color: #4e5b73;
   font-weight: 700;
@@ -110,14 +110,14 @@ export default {
 }
 
 #glossary-nav span.ln-disabled {
-  color: rgb(143, 143, 143);
+  color: #8f8f8f;
   pointer-events: none;
 }
 
 .ln-disabled:hover,
 .ln-disabled:focus {
-  background-color: #736A7B;
-  color: white;
+  background-color: #736a7b;
+  color: #fff;
 }
 
 #glossary-nav span:hover,
@@ -137,6 +137,7 @@ export default {
   grid-template-columns: auto 1fr;
   gap: 1rem;
   width: 100%;
+  max-width: 1024px;
 }
 
 #glossary dt {
@@ -153,4 +154,26 @@ export default {
 .listNavHide {
   display: none;
 }
+
+/* Media Queries for Responsiveness */
+@media screen and (max-width: 767px) {
+  #glossary-nav {
+    font-size: 1.2em;
+  }
+
+  #glossary-nav span {
+    padding: 0.4rem 0.8rem;
+  }
+}
+
+@media screen and (max-width: 480px) {
+  #glossary-nav {
+    font-size: 1em;
+  }
+
+  #glossary-nav span {
+    padding: 0.3rem 0.6rem;
+  }
+}
+
 </style>
