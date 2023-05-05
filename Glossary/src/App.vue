@@ -102,6 +102,8 @@ export default {
   font-weight: 700;
   padding: 0.5rem 1rem;
   cursor: pointer;
+  width:10%;
+  text-align:center;
   transition: background-color 0.2s, color 0.2s;
   -webkit-transition: background-color 0.2s, color 0.2s;
   -moz-transition: background-color 0.2s, color 0.2s;
