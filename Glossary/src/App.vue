@@ -45,9 +45,11 @@ export default {
   },
   methods: {
     async fetchGlossary() {
+      const glossaryCustomFile = document.querySelector("[data-glossary-path]")?.getAttribute('data-glossary-path');
       const lang = document.documentElement.getAttribute('lang');
       const glossaryFile = lang === 'fr' ? 'glossary_fr.txt' : 'glossary_en.txt';
-      const response = await axios.get(glossaryFile);
+      const fetchFile = glossaryCustomFile ? glossaryCustomFile : glossaryFile;
+      const response = await axios.get(fetchFile);
       this.glossary = response.data;
       this.selectedLetter = this.alphabet[0];
     },
