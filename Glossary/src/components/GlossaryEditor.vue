@@ -102,6 +102,35 @@
 <script>
 import Papa from "papaparse";
 import axios from "axios";
+const GlossaryAccess = {
+  enrollments: null,
+  getOrgId: function () {
+    return window.top.location.pathname.split("/")[4];
+  },
+  getTopicId: function () {
+    let topicId,
+      href = window.top.location.href;
+    if (href.indexOf("enhancedSequenceViewer") !== -1) {
+      href = decodeURIComponent(href);
+      href = href.split("?url=")[1];
+      href = href.split("?")[0];
+      topicId = href.split("/")[5];
+    } else {
+      topicId = href.split("/")[8];
+    }
+    return topicId;
+  },
+  init: function (data) {
+    GlossaryAccess.enrollments = data;
+    console.log(GlossaryAccess.enrollments.Access.ClasslistRoleName);
+    if (
+      GlossaryAccess.enrollments.Access.ClasslistRoleName ===
+      "Super Designer - Super concepteur"
+    ) {
+      this.hasGlossaryAccess = true;
+    }
+  },
+};
 export default {
   name: "GlossaryEditor",
   props: {
@@ -114,7 +143,18 @@ export default {
     return {
       glossary: [],
       language: "en",
+      hasGlossaryAccess: false,
+      fileUrl: "",
+      ModuleId: 0,
     };
+  },
+  computed: {
+    orgId() {
+      return GlossaryAccess.getOrgId();
+    },
+    topicId() {
+      return GlossaryAccess.getTopicId();
+    },
   },
   methods: {
     async fetchGlossary() {
@@ -191,7 +231,49 @@ export default {
         });
       });
     },
-    saveGlossary() {
+    async fetchFileUrl() {
+      const csrfToken = localStorage["XSRF.Token"];
+      const apiVersion = "1.22";
+      const apiUrl = `/d2l/api/le/${apiVersion}/${this.orgId}/content/topics/${this.topicId}`;
+
+      try {
+        const response = await axios.get(apiUrl, {
+          headers: {
+            "X-Csrf-Token": csrfToken,
+          },
+        });
+
+        this.fileUrl = response.data.Url;
+        this.ModuleId = response.data.ParentModuleId;
+        console.log("Relative file URL:", response.data);
+        console.log("Absolute file URL:", this.fileUrl);
+      } catch (error) {
+        console.error("Error fetching file URL:", error);
+      }
+    },
+    getRelativePath(fullUrl) {
+      const lastIndex = fullUrl.lastIndexOf("/");
+      const path = fullUrl.substring(0, lastIndex);
+      return path;
+    },
+    async saveGlossary() {
+      const orgUnitId = GlossaryAccess.getOrgId();
+      console.log(orgUnitId);
+      const moduleId = this.ModuleId;
+      const topicData = {
+        IsHidden: true,
+        IsLocked: false,
+        ShortTitle: "Glossary",
+        Type: 1,
+        DueDate: null,
+        Url: `${this.getRelativePath(this.fileUrl)}/glossary_${
+          this.language
+        }.txt`,
+        StartDate: null,
+        TopicType: 1,
+        EndDate: null,
+        Title: "Glossary topic content",
+      };
       const fileName = `glossary_${this.language}.txt`;
       const sortedGlossary = this.sortGlossary(this.glossary);
       const fileContent = JSON.stringify(sortedGlossary);
@@ -203,10 +285,47 @@ export default {
       downloadLink.href = downloadUrl;
       downloadLink.download = fileName;
       document.body.appendChild(downloadLink);
-      downloadLink.click();
+      await this.uploadFile(orgUnitId, moduleId, topicData, fileContent);
+      if (window.confirm("File Saved. Do you want to also download this file?")) {downloadLink.click();}
       document.body.removeChild(downloadLink);
       URL.revokeObjectURL(downloadUrl);
     },
+    async uploadFile(orgUnitId, moduleId, topicData, file) {
+      const boundary = "xxBOUNDARYxx";
+
+      // Prepare the JSON data for the topic
+      const jsonPart = `--${boundary}\r\nContent-Type: application/json\r\n\r\n${JSON.stringify(
+        topicData
+      )}\r\n`;
+
+      // Prepare the file part
+      const filePart = `--${boundary}\r\nContent-Disposition: form-data; name="file"; filename="glossary_${this.language}.txt"\r\nContent-Type: text/plain\r\n\r\n${file}\r\n--${boundary}--`;
+
+      // Combine the JSON data and file into a single request body
+      const requestBody = jsonPart + filePart;
+
+      // Get the token from local storage
+      const csrfToken = localStorage["XSRF.Token"];
+
+      // Make the request using axios
+      try {
+        const response = await axios.post(
+          `/d2l/api/le/1.22/${orgUnitId}/content/modules/${moduleId}/structure/`,
+          requestBody,
+          {
+            headers: {
+              "Content-Type": `multipart/mixed;boundary=${boundary}`,
+              "X-Csrf-Token": csrfToken,
+            },
+          }
+        );
+
+        console.log("File uploaded successfully", response);
+      } catch (error) {
+        console.error("Error uploading file", error);
+      }
+    },
+
     sortGlossary(glossary) {
       return glossary.sort((a, b) =>
         (a.term || "").localeCompare(b.term || "")
@@ -222,6 +341,7 @@ export default {
   },
   mounted() {
     this.fetchGlossary();
+    this.fetchFileUrl();
   },
 };
 </script>
