@@ -160,7 +160,7 @@ export default {
     async fetchGlossary() {
       const response = await axios.get(this.dataGlossaryFile);
       this.glossary = response.data;
-      if (this.dataGlossaryPath.includes("_fr")) {
+      if (this.dataGlossaryFile.includes("_fr")) {
         this.language = "fr";
       } else {
         this.language = "en";
@@ -245,8 +245,6 @@ export default {
 
         this.fileUrl = response.data.Url;
         this.ModuleId = response.data.ParentModuleId;
-        console.log("Relative file URL:", response.data);
-        console.log("Absolute file URL:", this.fileUrl);
       } catch (error) {
         console.error("Error fetching file URL:", error);
       }
