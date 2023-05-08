@@ -15,9 +15,8 @@ This is a simple and accessible Vue.js component that displays a glossary of ter
 1. Include the `Glossary.vue` component in your Vue.js project.
 2. Import the component and add it to your Vue.js instance or component.
 3. Add the `<Glossary />` component in your template where you want the glossary to appear.
-4. Add a `data-glossary-path` attribute to an HTML element if you want to use a custom glossary file path.
-5. Provide a glossary text file (either `glossary_en.txt` for English or `glossary_fr.txt` for French) containing the terms and definitions, one term-definition pair per line separated by a tab character.
-
+4. Add a `data-glossary-file` attribute to an HTML element if you want to use a custom glossary file path.
+5. Provide a glossary text file (either `glossary_en.txt` for English or `glossary_fr.txt` for French) either in the same path as the html file or you can specify a custom relative or absolute path in `data-glossary-file`.
 ## Example
 
 ```html
@@ -25,9 +24,7 @@ This is a simple and accessible Vue.js component that displays a glossary of ter
 </div>
 ```
 
-## Glossary Text File Format
-
-Each line in the glossary text file should have a term-definition pair separated by a tab character. For example:
+## Glossary JSON File Format
 
 ```json
 [
