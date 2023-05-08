@@ -1,10 +1,10 @@
 ﻿document.addEventListener("DOMContentLoaded", function () {
 	const docLang = document.documentElement.getAttribute("lang");
-    const dataFile = document.querySelector("[data-file]")?.getAttribute("data-file");
+    const dataFile = document.querySelector("[data-glossary-file]")?.getAttribute("data-glossary-file");
 	// Create a new style element and set its innerHTML to the provided CSS
 	const styleElement = document.createElement("style");
 	styleElement.innerHTML = `
-            .popup {
+            .glossary .popup {
                 position: absolute;
                 z-index: 1;
                 background-color: #333;
@@ -15,6 +15,7 @@
                 max-width: 300px;
                 width: max-content;
                 display: none;
+				cursor: text;
             }
     
             .popup[aria-hidden="false"] {
@@ -39,6 +40,9 @@
             .tooltip-container {
                 display: inline;
             }
+			.glossary p{
+				margin-bottom: 0;
+			}
         `;
 
 	// Append the style element to the document head

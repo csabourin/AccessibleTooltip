@@ -27,7 +27,7 @@
       <!-- (rest of the template code) -->
       <details>
         <summary>Glossary Editor</summary>
-        <GlossaryEditor :data-glossary-path="fetchFile" />
+        <GlossaryEditor :data-glossary-file="fetchFile" />
       </details>
     </div>
   </div>
@@ -93,8 +93,8 @@ export default {
   methods: {
     async fetchGlossary() {
       const glossaryCustomFile = document
-        .querySelector("[data-glossary-path]")
-        ?.getAttribute("data-glossary-path");
+        .querySelector("[data-glossary-file]")
+        ?.getAttribute("data-glossary-file");
       const lang = document.documentElement.getAttribute("lang");
       const glossaryFile =
         lang === "fr" ? "glossary_fr.txt" : "glossary_en.txt";

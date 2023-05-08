@@ -89,7 +89,7 @@
             class="remove-btn"
             @click="removeTerm(index)"
           >
-            <span class="remove-icon">&times;</span>
+            <span class="remove-icon">X</span>
           </button>
         </div>
       </dl>
@@ -134,7 +134,7 @@ const GlossaryAccess = {
 export default {
   name: "GlossaryEditor",
   props: {
-    dataGlossaryPath: {
+    dataGlossaryFile: {
       type: String,
       required: true,
     },
@@ -158,7 +158,7 @@ export default {
   },
   methods: {
     async fetchGlossary() {
-      const response = await axios.get(this.dataGlossaryPath);
+      const response = await axios.get(this.dataGlossaryFile);
       this.glossary = response.data;
       if (this.dataGlossaryPath.includes("_fr")) {
         this.language = "fr";
