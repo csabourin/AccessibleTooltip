@@ -1,17 +1,11 @@
 <template>
   <div id="glossary-app">
     <nav id="glossary-nav">
-      <span
-        v-for="letter in alphabet"
-        :key="letter"
-        :class="{
-          'ln-disabled': isDisabled(letter),
-          'ln-selected': selectedLetter === letter,
-        }"
-        @click="selectLetter(letter)"
-        @keydown.enter.space="selectLetter(letter)"
-        :tabindex="isDisabled(letter) ? -1 : 0"
-      >
+      <span v-for="letter in alphabet" :key="letter" :class="{
+        'ln-disabled': isDisabled(letter),
+        'ln-selected': selectedLetter === letter,
+      }" @click="selectLetter(letter)" @keydown.enter.space="selectLetter(letter)"
+        :tabindex="isDisabled(letter) ? -1 : 0">
         {{ letter.toUpperCase() }}
       </span>
     </nav>
@@ -56,10 +50,11 @@ const GlossaryAccess = {
   },
   init: function (data) {
     GlossaryAccess.enrollments = data;
-    console.log(GlossaryAccess.enrollments.Access.ClasslistRoleName);
+    console.log("Role : ", GlossaryAccess.enrollments.Access.ClasslistRoleName);
     if (
       GlossaryAccess.enrollments.Access.ClasslistRoleName ===
       "Super Designer - Super concepteur"
+      || GlossaryAccess.enrollments.Access.ClasslistRoleName === "Designer - Concepteur"
     ) {
       this.hasGlossaryAccess = true;
     }
@@ -92,6 +87,7 @@ export default {
   },
   methods: {
     async fetchGlossary() {
+      const timestamp = new Date().getTime();
       const glossaryCustomFile = document
         .querySelector("[data-glossary-file]")
         ?.getAttribute("data-glossary-file");
@@ -99,7 +95,7 @@ export default {
       const glossaryFile =
         lang === "fr" ? "glossary_fr.txt" : "glossary_en.txt";
       this.fetchFile = glossaryCustomFile ? glossaryCustomFile : glossaryFile;
-      const response = await axios.get(this.fetchFile);
+      const response = await axios.get(this.fetchFile+"?timestamp=" + timestamp);
       this.glossary = response.data;
       this.selectedLetter = this.alphabet[0];
       // Check if libVal is loaded, then call initializeGlossaryAccess

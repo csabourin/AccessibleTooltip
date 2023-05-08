@@ -49,13 +49,7 @@
       </details>
       <header>
         <div class="file-input-container">
-          <input
-            type="file"
-            ref="fileInput"
-            @change="loadFile"
-            accept=".csv,.json,.txt"
-            hidden
-          />
+          <input type="file" ref="fileInput" @change="loadFile" accept=".csv,.json,.txt" hidden />
           <button class="load-file-btn" @click="triggerFileInput">
             Load File
           </button>
@@ -77,18 +71,10 @@
             </dt>
             <dd>
               <label for="definition">Definition</label>
-              <textarea
-                id="definition"
-                v-model="entry.definition"
-                rows="5"
-              ></textarea>
+              <textarea id="definition" v-model="entry.definition" rows="5"></textarea>
             </dd>
           </div>
-          <button
-            title="Remove term"
-            class="remove-btn"
-            @click="removeTerm(index)"
-          >
+          <button title="Remove term" class="remove-btn" @click="removeTerm(index)">
             <span class="remove-icon">X</span>
           </button>
         </div>
@@ -122,13 +108,6 @@ const GlossaryAccess = {
   },
   init: function (data) {
     GlossaryAccess.enrollments = data;
-    console.log(GlossaryAccess.enrollments.Access.ClasslistRoleName);
-    if (
-      GlossaryAccess.enrollments.Access.ClasslistRoleName ===
-      "Super Designer - Super concepteur"
-    ) {
-      this.hasGlossaryAccess = true;
-    }
   },
 };
 export default {
@@ -143,7 +122,6 @@ export default {
     return {
       glossary: [],
       language: "en",
-      hasGlossaryAccess: false,
       fileUrl: "",
       ModuleId: 0,
     };
@@ -158,7 +136,8 @@ export default {
   },
   methods: {
     async fetchGlossary() {
-      const response = await axios.get(this.dataGlossaryFile);
+      const timestamp = new Date().getTime();
+      const response = await axios.get(this.dataGlossaryFile+"?timestamp=" + timestamp);
       this.glossary = response.data;
       if (this.dataGlossaryFile.includes("_fr")) {
         this.language = "fr";
@@ -264,9 +243,8 @@ export default {
         ShortTitle: "Glossary",
         Type: 1,
         DueDate: null,
-        Url: `${this.getRelativePath(this.fileUrl)}/glossary_${
-          this.language
-        }.txt`,
+        Url: `${this.getRelativePath(this.fileUrl)}/glossary_${this.language
+          }.txt`,
         StartDate: null,
         TopicType: 1,
         EndDate: null,
@@ -284,9 +262,10 @@ export default {
       downloadLink.download = fileName;
       document.body.appendChild(downloadLink);
       await this.uploadFile(orgUnitId, moduleId, topicData, fileContent);
-      if (window.confirm("File Saved. Do you want to also download this file?")) {downloadLink.click();}
+      if (window.confirm("File Saved. Do you want to also download this file?")) { downloadLink.click(); }
       document.body.removeChild(downloadLink);
       URL.revokeObjectURL(downloadUrl);
+      window.location.reload();
     },
     async uploadFile(orgUnitId, moduleId, topicData, file) {
       const boundary = "xxBOUNDARYxx";
