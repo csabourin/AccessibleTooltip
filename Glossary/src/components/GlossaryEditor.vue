@@ -248,7 +248,7 @@ export default {
         StartDate: null,
         TopicType: 1,
         EndDate: null,
-        Title: "Glossary topic content",
+        Title: "Remove topic from Content but keep the associated file in the course",
       };
       const fileName = `glossary_${this.language}.txt`;
       const sortedGlossary = this.sortGlossary(this.glossary);

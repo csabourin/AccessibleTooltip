@@ -6,7 +6,7 @@
 	// Create a new style element and set its innerHTML to the provided CSS
 	const styleElement = document.createElement("style");
 	styleElement.innerHTML = `
-            .glossary .popup {
+            .glossary-wrapper .glossary-popup {
                 position: absolute;
                 z-index: 1;
                 background-color: #333;
@@ -20,9 +20,13 @@
 				cursor: text;
             }
     
-            .popup[aria-hidden="false"] {
+            .glossary-popup[aria-hidden="false"] {
                 display: block;
             }
+
+			.glossary-wrapper{
+				display: inline-block;
+			}
     
             .glossary {
                 position: relative;
@@ -39,54 +43,59 @@
                 color: #0056b3;
             }
     
-            .tooltip-container {
-                display: inline;
-            }
-			.glossary p{
+			.glossary-wrapper p.popupText{
 				margin-bottom: 0;
+				color: #fff;
 			}
         `;
 
 	// Append the style element to the document head
-	document.head.appendChild(styleElement);
 	// Fetch the definitions from the JSON file
 	const url = dataFile ? dataFile : `glossary_${docLang}.txt`;
 	fetch(url)
 		.then((response) => response.json())
 		.then((definitions) => {
-			// Loop through the definitions
-			definitions.forEach((definition) => {
-				// Find the glossary element with the matching term
-				const glossaryElement = Array.from(
-					document.querySelectorAll(".glossary")
-				).find(
-					(element) =>
-						element.getAttribute("data-term").trim().toLowerCase() ===
-						definition.term.trim().toLowerCase()
+			// Find all glossary elements
+			const glossaryElements = Array.from(
+				document.querySelectorAll(".glossary")
+			);
+
+			// Loop through the glossary elements
+			glossaryElements.forEach((glossaryElement, index) => {
+				const term = glossaryElement
+					.getAttribute("data-term")
+					.trim()
+					.toLowerCase();
+				// Find a definition that matches the glossary element's term
+				const definition = definitions.find(
+					(definition) => definition.term.trim().toLowerCase() === term
 				);
 
-				if (glossaryElement) {
+				if (definition) {
 					glossaryElement.setAttribute("tabindex", "0");
-					// Create a new popup element
+					const wrapper = document.createElement("span");
+					wrapper.className = "glossary-wrapper";
+					wrapper.style.position = "relative";
+					wrapper.style.display = "inline-block";
+
+					glossaryElement.parentNode.replaceChild(wrapper, glossaryElement);
+					wrapper.appendChild(glossaryElement);
+
 					const popup = document.createElement("div");
-					popup.id = `popup_${definition.term}`;
-					popup.className = "popup speech-bubble";
+					popup.id = `popup_${definition.term}_${index}`; // Add index to make the ID unique
+					popup.className = "glossary-popup speech-bubble";
 					popup.setAttribute("speech-bubble", "true");
 					popup.setAttribute("role", "tooltip");
 					popup.setAttribute("aria-hidden", "true");
 
-					// Check the document language and set the innerHTML accordingly
 					if (docLang && docLang.toLowerCase() === "fr") {
-						popup.innerHTML = `<p>Définition: ${definition.definition}</p>`;
+						popup.innerHTML = `<p class="popupText">Définition: ${definition.definition}</p>`;
 					} else {
-						popup.innerHTML = `<p>Definition: ${definition.definition}</p>`;
+						popup.innerHTML = `<p class="popupText">Definition: ${definition.definition}</p>`;
 					}
 
-					// Append the popup element to the glossary element
-					glossaryElement.appendChild(popup);
-
-					// Bind the tooltip events to the glossary element
-					bindTooltipEvents(glossaryElement, popup);
+					wrapper.appendChild(popup); // Append the popup element to the wrapper
+					bindTooltipEvents(wrapper, popup );
 				}
 			});
 		});
@@ -151,46 +160,41 @@
 			const originalDisplay = popup.style.display;
 			popup.style.visibility = "hidden";
 			popup.style.display = "block";
-
-			// Get the tooltip element's bounding rectangle
+		
+			// Get the tooltip element's and its parent's bounding rectangles
 			const tooltipRect = tooltip.getBoundingClientRect();
-
-			// Calculate the space above the tooltip element
-			const spaceAbove = tooltipRect.top;
-
-			// Calculate the space below the tooltip element
-			const spaceBelow = window.innerHeight - tooltipRect.bottom;
-
+			const parentRect = tooltip.parentElement.getBoundingClientRect();
+		
+			// Limit the width of the popup to the width of its parent
+			popup.style.maxWidth = `${parentRect.width<300?parentRect.width:300}px`;
+		
 			// Determine if there's enough space for the popup above the tooltip
-			const enoughSpaceAbove = spaceAbove > popup.offsetHeight + 8; // 16px equals 1rem
-
+			const enoughSpaceAbove = window.innerHeight - tooltipRect.bottom > popup.offsetHeight + 8; // 16px equals 1rem
+		
 			// Set the popup position based on the available space
-			popup.style.position = "fixed";
-
-			// Calculate left position while considering the 10 pixels margin
-			let leftPos = tooltipRect.left + window.scrollX;
-			if (leftPos < 20) {
-				leftPos = 20;
-			} else if (leftPos + popup.offsetWidth > window.innerWidth - 20) {
-				leftPos = window.innerWidth - 20 - popup.offsetWidth;
-			}
-			popup.style.left = `${leftPos}px`;
-
+			popup.style.position = "absolute";
+		
+			// Center the popup horizontally relative to the tooltip
+			const leftPos = parentRect.left + parentRect.width / 2 - popup.offsetWidth;
+			// Make sure the popup does not overflow the viewport
+			const safeLeftPos = Math.max(20, Math.min(leftPos, window.innerWidth - popup.offsetWidth - 20));
+			popup.style.left = `${safeLeftPos}px`;
+		
 			if (enoughSpaceAbove) {
-				popup.style.top = `${
-					tooltipRect.top - popup.offsetHeight - 8 + window.scrollY
-				}px`; // 16px equals 1rem
+				popup.style.top = `${tooltipRect.height + 8}px`; // 16px equals 1rem
 				popup.setAttribute("pbottom", "true");
 				popup.setAttribute("aleft", "true");
 			} else {
-				popup.style.top = `${tooltipRect.bottom + 8 + window.scrollY}px`; // 16px equals 1rem
+				popup.style.top = `-${popup.offsetHeight + 8}px`; // 16px equals 1rem
 				popup.setAttribute("ptop", "true");
 				popup.setAttribute("aleft", "true");
 			}
-
+		
 			// Restore the popup's original display value
 			popup.style.visibility = "visible";
 			popup.style.display = originalDisplay;
 		}
+
 	}
+	document.head.appendChild(styleElement);
 });
