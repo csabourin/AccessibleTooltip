@@ -1,4 +1,23 @@
-﻿document.addEventListener("DOMContentLoaded", function () {
+﻿import {computePosition, size,offset,autoPlacement} from 'https://cdn.jsdelivr.net/npm/@floating-ui/dom@1.4.5/+esm';
+function updatePosition(referenceEl,floatingEl) {
+	computePosition(referenceEl, floatingEl,{
+			middleware: [autoPlacement({autoAlignment: true}),offset(10),size({
+				apply({availableWidth, availableHeight, elements}) {
+				  // Do things with the data, e.g.
+				  Object.assign(floatingEl.style, {
+					maxWidth: `${availableWidth}px`,
+					maxHeight: `${availableHeight}px`,
+				  });
+				},
+			  })]
+		  }).then(({x, y}) => {
+			Object.assign(floatingEl.style, {
+			  left: `${x}px`,
+			  top: `${y}px`,
+			});
+		  });
+	}
+document.addEventListener("DOMContentLoaded", function () {
 	const docLang = document.documentElement.getAttribute("lang");
 	const dataFile = document
 		.querySelector("[data-glossary-file]")
@@ -6,22 +25,25 @@
 	// Create a new style element and set its innerHTML to the provided CSS
 	const styleElement = document.createElement("style");
 	styleElement.innerHTML = `
-            .glossary-wrapper .glossary-popup {
+            .glossary-popup {
                 position: absolute;
+				top: 0;
+				left:0;
+				max-width: 300px;
                 z-index: 1;
                 background-color: #333;
                 color: #fff;
                 padding: 12px;
+				box-sizing: border-box;
                 border-radius: 4px;
                 box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-                max-width: 300px;
-                width: max-content;
-                display: none;
 				cursor: text;
+				visibility:hidden;
             }
     
             .glossary-popup[aria-hidden="false"] {
                 display: block;
+				visibility:visible;
             }
 
 			.glossary-wrapper{
@@ -77,9 +99,9 @@
 					wrapper.className = "glossary-wrapper";
 					wrapper.style.position = "relative";
 					wrapper.style.display = "inline-block";
-
-					glossaryElement.parentNode.replaceChild(wrapper, glossaryElement);
-					wrapper.appendChild(glossaryElement);
+					
+					// glossaryElement.parentNode.replaceChild(wrapper, glossaryElement);
+					// wrapper.appendChild(glossaryElement);
 
 					const popup = document.createElement("div");
 					popup.id = `popup_${definition.term}_${index}`; // Add index to make the ID unique
@@ -93,9 +115,26 @@
 					} else {
 						popup.innerHTML = `<p class="popupText">Definition: ${definition.definition}</p>`;
 					}
-
-					wrapper.appendChild(popup); // Append the popup element to the wrapper
-					bindTooltipEvents(wrapper, popup );
+					glossaryElement.parentNode.insertBefore(popup, glossaryElement.nextSibling)
+					// wrapper.appendChild(popup); // Append the popup element to the wrapper
+					bindTooltipEvents(glossaryElement, popup );
+					computePosition(glossaryElement,popup,{
+						middleware: [autoPlacement({autoAlignment: true}),offset(10),size({
+							apply({availableWidth, availableHeight, elements}) {
+							  // Do things with the data, e.g.
+							  Object.assign(popup.style, {
+								maxWidth: `${availableWidth}px`,
+								maxHeight: `${availableHeight}px`,
+							  });
+							},
+						  })]
+					  }).then(({x, y}) => {
+						console.log('x', x, 'y', y);
+						Object.assign(popup.style, {
+						  left: `${x}px`,
+						  top: `${y}px`,
+						});
+					  });
 				}
 			});
 		});
@@ -106,9 +145,9 @@
 
 		tooltip.addEventListener("mouseenter", function (event) {
 			clearTimeout(timeout);
-			timeout = setTimeout(function () {
-				positionPopup(event || window.event, tooltip, popup);
+			timeout = setTimeout(function () {				
 				popup.setAttribute("aria-hidden", "false");
+				updatePosition(tooltip, popup);
 			}, 500); // Wait half a second before displaying the tooltip
 		});
 
@@ -133,8 +172,8 @@
 		tooltip.addEventListener("focus", function (event) {
 			clearTimeout(timeout);
 			timeout = setTimeout(function () {
-				positionPopup(event || window.event, tooltip, popup);
 				popup.setAttribute("aria-hidden", "false");
+				updatePosition(tooltip, popup);
 			}, 500); // Wait half a second before displaying the tooltip
 		});
 
@@ -147,53 +186,12 @@
 
 		tooltip.addEventListener("touchstart", function (event) {
 			clearTimeout(timeout);
-			positionPopup(event || window.event, tooltip, popup);
 			if (popup.getAttribute("aria-hidden") === "true") {
 				popup.setAttribute("aria-hidden", "false");
 			} else {
 				popup.setAttribute("aria-hidden", "true");
 			}
 		});
-
-		function positionPopup(event, tooltip, popup) {
-			// Temporarily make the popup visible to calculate its dimensions
-			const originalDisplay = popup.style.display;
-			popup.style.visibility = "hidden";
-			popup.style.display = "block";
-		
-			// Get the tooltip element's and its parent's bounding rectangles
-			const tooltipRect = tooltip.getBoundingClientRect();
-			const parentRect = tooltip.parentElement.getBoundingClientRect();
-		
-			// Limit the width of the popup to the width of its parent
-			popup.style.maxWidth = `${parentRect.width<300?parentRect.width:300}px`;
-		
-			// Determine if there's enough space for the popup above the tooltip
-			const enoughSpaceAbove = window.innerHeight - tooltipRect.bottom > popup.offsetHeight + 8; // 16px equals 1rem
-		
-			// Set the popup position based on the available space
-			popup.style.position = "absolute";
-		
-			// Center the popup horizontally relative to the tooltip
-			const leftPos = parentRect.left + parentRect.width / 2 - popup.offsetWidth;
-			// Make sure the popup does not overflow the viewport
-			const safeLeftPos = Math.max(20, Math.min(leftPos, window.innerWidth - popup.offsetWidth - 20));
-			popup.style.left = `${safeLeftPos}px`;
-		
-			if (enoughSpaceAbove) {
-				popup.style.top = `${tooltipRect.height + 8}px`; // 16px equals 1rem
-				popup.setAttribute("pbottom", "true");
-				popup.setAttribute("aleft", "true");
-			} else {
-				popup.style.top = `-${popup.offsetHeight + 8}px`; // 16px equals 1rem
-				popup.setAttribute("ptop", "true");
-				popup.setAttribute("aleft", "true");
-			}
-		
-			// Restore the popup's original display value
-			popup.style.visibility = "visible";
-			popup.style.display = originalDisplay;
-		}
 
 	}
 	document.head.appendChild(styleElement);
