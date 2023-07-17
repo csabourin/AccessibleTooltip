@@ -111,9 +111,9 @@ document.addEventListener("DOMContentLoaded", function () {
 					popup.setAttribute("aria-hidden", "true");
 
 					if (docLang && docLang.toLowerCase() === "fr") {
-						popup.innerHTML = `<p class="popupText">Définition: ${definition.definition}</p>`;
+						popup.innerHTML = `<p style="color:#fff;" class="popupText">Définition: ${definition.definition}</p>`;
 					} else {
-						popup.innerHTML = `<p class="popupText">Definition: ${definition.definition}</p>`;
+						popup.innerHTML = `<p style="color:#fff;" class="popupText">Definition: ${definition.definition}</p>`;
 					}
 					glossaryElement.parentNode.insertBefore(popup, glossaryElement.nextSibling)
 					// wrapper.appendChild(popup); // Append the popup element to the wrapper
