@@ -29,7 +29,7 @@ document.addEventListener("DOMContentLoaded", function () {
                 position: absolute;
 				top: 0;
 				left:0;
-				max-width: 300px;
+				max-width: max-content;
                 z-index: 1;
                 background-color: #333;
                 color: #fff;
@@ -95,18 +95,17 @@ document.addEventListener("DOMContentLoaded", function () {
 
 				if (definition) {
 					glossaryElement.setAttribute("tabindex", "0");
-					const wrapper = document.createElement("span");
-					wrapper.className = "glossary-wrapper";
-					wrapper.style.position = "relative";
-					wrapper.style.display = "inline-block";
+					// const wrapper = document.createElement("span");
+					// wrapper.className = "glossary-wrapper";
+					// wrapper.style.position = "relative";
+					// wrapper.style.display = "inline-block";
 					
 					// glossaryElement.parentNode.replaceChild(wrapper, glossaryElement);
 					// wrapper.appendChild(glossaryElement);
 
 					const popup = document.createElement("div");
 					popup.id = `popup_${definition.term}_${index}`; // Add index to make the ID unique
-					popup.className = "glossary-popup speech-bubble";
-					popup.setAttribute("speech-bubble", "true");
+					popup.className = "glossary-popup";
 					popup.setAttribute("role", "tooltip");
 					popup.setAttribute("aria-hidden", "true");
 
@@ -129,7 +128,6 @@ document.addEventListener("DOMContentLoaded", function () {
 							},
 						  })]
 					  }).then(({x, y}) => {
-						console.log('x', x, 'y', y);
 						Object.assign(popup.style, {
 						  left: `${x}px`,
 						  top: `${y}px`,
@@ -139,7 +137,7 @@ document.addEventListener("DOMContentLoaded", function () {
 			});
 		});
 
-	// The tooltip events code you provided
+	
 	function bindTooltipEvents(tooltip, popup) {
 		let timeout;
 

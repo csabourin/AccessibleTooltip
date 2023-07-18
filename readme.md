@@ -6,7 +6,7 @@ This script creates an accessible tooltip for glossary terms with customizable d
 
 1. Add the `.glossary` class to any element in your HTML that contains a glossary term.
 2. Add a `data-term` attribute to the `.glossary` element with the term as its value. This value will be used to fetch the correct definition from the JSON file.
-3. If you want to use a custom JSON file, add a `data-file` attribute to the script tag with the JSON file's path as its value.
+3. If you want to use a custom JSON file, add a `data-glossary-file` attribute to the script tag with the JSON file's path as its value.
 4. To display the tooltip in a specific language, set the `lang` attribute on the `<html>` element to the desired language code (e.g., "fr" for French).
 
 ## Example usage
@@ -15,7 +15,7 @@ This script creates an accessible tooltip for glossary terms with customizable d
 <html lang="fr">
   <head>
     <!-- Add the script tag -->
-    <script src="path/to/tooltip-script.js" data-file="custom_glossary.json"></script>
+    <script type="module" src="path/to/glossary.js" data-glossary-file="custom_glossary.txt"></script>
   </head>
   <body>
     <p>
