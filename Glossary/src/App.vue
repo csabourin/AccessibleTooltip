@@ -18,7 +18,6 @@
       </dl>
     </div>
     <div v-if="hasGlossaryAccess">
-      <!-- (rest of the template code) -->
       <details>
         <summary>Glossary Editor</summary>
         <GlossaryEditor :data-glossary-file="fetchFile" />
@@ -88,17 +87,17 @@ export default {
   methods: {
     async fetchGlossary() {
       const timestamp = new Date().getTime();
-      const glossaryCustomFile = document
-        .querySelector("[data-glossary-file]")
-        ?.getAttribute("data-glossary-file");
+      const glossaryCustomFile = document.querySelector("[data-glossary-file]")?.getAttribute("data-glossary-file");
       const lang = document.documentElement.getAttribute("lang");
-      const glossaryFile =
-        lang === "fr" ? "glossary_fr.txt" : "glossary_en.txt";
+      const glossaryFile = lang === "fr" ? "glossary_fr.txt" : "glossary_en.txt";
       this.fetchFile = glossaryCustomFile ? glossaryCustomFile : glossaryFile;
-      const response = await axios.get(this.fetchFile+"?timestamp=" + timestamp);
-      this.glossary = response.data;
-      this.selectedLetter = this.alphabet[0];
-      // Check if libVal is loaded, then call initializeGlossaryAccess
+      const response = await axios.get(this.fetchFile + "?timestamp=" + timestamp);
+
+      // Sorting the glossary alphabetically based on the term
+      this.glossary = response.data.sort((a, b) => a.term.localeCompare(b.term, 'en', { sensitivity: 'base' }));
+
+      // Selecting the first letter of the first term in the sorted glossary
+      this.selectedLetter = this.getClass(this.glossary[0].term).slice(-1);
     },
     selectLetter(letter) {
       this.selectedLetter = letter;
@@ -145,7 +144,6 @@ export default {
 .ln-selected {
   background-color: #261933;
   color: #fff;
-  text-shadow: 0 0 0.5rem #ffffff;
   font-weight: bold;
   text-decoration: underline;
 }
@@ -159,6 +157,8 @@ export default {
   max-width: 1024px;
   width: 100%;
   margin-bottom: 20px;
+  margin:auto;
+  margin-bottom:1em;
 }
 
 #glossary-nav span {
@@ -190,7 +190,7 @@ export default {
 
 #glossary-nav span:hover,
 #glossary-nav span:focus {
-  background-color: #261933;
+  background-color: #3f2a56;
   color: #fff;
 }
 
@@ -202,20 +202,22 @@ export default {
 
 #glossary {
   display: grid;
-  grid-template-columns: auto 1fr;
+  grid-template-columns: 2fr 3fr;
   gap: 1rem;
-  width: 100%;
   max-width: 1024px;
+  margin:auto;
 }
 
 #glossary dt {
   font-size: 1.1875rem;
+  text-align: right;
   line-height: 1.75rem;
   font-weight: bold;
   margin-bottom: 1rem;
 }
 
 #glossary dd {
+  margin:0;
   margin-bottom: 1rem;
 }
 

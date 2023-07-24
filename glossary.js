@@ -146,7 +146,7 @@ document.addEventListener("DOMContentLoaded", function () {
 			timeout = setTimeout(function () {				
 				popup.setAttribute("aria-hidden", "false");
 				updatePosition(tooltip, popup);
-			}, 500); // Wait half a second before displaying the tooltip
+			}, 50); // Dont't wait half a second before displaying the tooltip
 		});
 
 		tooltip.addEventListener("mouseleave", function () {
@@ -172,7 +172,7 @@ document.addEventListener("DOMContentLoaded", function () {
 			timeout = setTimeout(function () {
 				popup.setAttribute("aria-hidden", "false");
 				updatePosition(tooltip, popup);
-			}, 500); // Wait half a second before displaying the tooltip
+			}, 50); // Dont't wait half a second before displaying the tooltip
 		});
 
 		tooltip.addEventListener("blur", function () {

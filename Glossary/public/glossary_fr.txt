@@ -52,10 +52,6 @@
 		"definition": "Un problème et tout ce qui est lié au problème (contexte, actions, personnes)."
 	},
 	{
-		"term": "Analyse SAT",
-		"definition": "Méthode holistique d'analyse du système du point de vue structurel, attitudinal et transactionnel."
-	},
-	{
 		"term": "Système",
 		"definition": "Réseau interconnecté où l'interaction des facteurs produit une variété de résultats, positifs, négatifs ou neutres."
 	},
