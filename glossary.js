@@ -121,20 +121,39 @@ document.addEventListener("DOMContentLoaded", function () {
 						middleware: [autoPlacement({autoAlignment: true}),offset(10),size({
 							apply({availableWidth, availableHeight, elements}) {
 							  // Do things with the data, e.g.
-							  Object.assign(popup.style, {
-								maxWidth: `${availableWidth}px`,
-								maxHeight: `${availableHeight}px`,
-							  });
+							  	Object.assign(popup.style, {
+									maxWidth: `${availableWidth}px`,
+									maxHeight: `${availableHeight}px`,
+							  	});
 							},
-						  })]
-					  }).then(({x, y}) => {
+						})]
+					}).then(({x, y}) => {
 						Object.assign(popup.style, {
-						  left: `${x}px`,
-						  top: `${y}px`,
+							left: `${x}px`,
+							top: `${y}px`,
 						});
-					  });
+					});
 				}
 			});
+
+			var flipCardDefinitions = document.querySelectorAll(".flip-card .flip-card-front[aria-hidden='true'] .glossary, .flip-card .flip-card-back[aria-hidden='true'] .glossary");
+
+			flipCardDefinitions.forEach((element) => {
+				element.setAttribute("tabindex", -1)
+			})
+
+			const flipCards = document.querySelectorAll(".flip-card")
+			flipCards.forEach((element) => {
+				element.onclick = () => {
+					document.querySelectorAll(".flip-card .flip-card-front:not([aria-hidden='true']) .glossary, .flip-card .flip-card-back:not([aria-hidden='true']) .glossary").forEach((element) => {
+						element.setAttribute("tabindex", 0)
+					})
+
+					document.querySelectorAll(".flip-card .flip-card-front[aria-hidden='true'] .glossary, .flip-card .flip-card-back[aria-hidden='true'] .glossary").forEach((element) => {
+						element.setAttribute("tabindex", -1)
+					})
+				};
+			})
 		});
 
 	
