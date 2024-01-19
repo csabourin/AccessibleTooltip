@@ -39,6 +39,7 @@ document.addEventListener("DOMContentLoaded", function () {
                 box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
 				cursor: text;
 				visibility:hidden;
+				outline: 1px solid white;
             }
     
             .glossary-popup[aria-hidden="false"] {
@@ -95,6 +96,12 @@ document.addEventListener("DOMContentLoaded", function () {
 
 				if (definition) {
 					glossaryElement.setAttribute("tabindex", "0");
+					if (docLang && docLang.toLowerCase() === "fr") {
+						glossaryElement.innerHTML = glossaryElement.innerHTML + `<span class="sr-only"> (comprend une définition, sélectionner l'élément avec la touche TAB puis utiliser la touche de la flèche vers le bas pour accéder à la définition)</span>`;
+					} else {
+						glossaryElement.innerHTML = glossaryElement.innerHTML + `<span class="sr-only"> (has definition, select element with TAB key then use down arrow key to access definition)</span>`;
+					}
+					glossaryElement.setAttribute("aria-describedby", "definition_" + index);
 					// const wrapper = document.createElement("span");
 					// wrapper.className = "glossary-wrapper";
 					// wrapper.style.position = "relative";
@@ -104,15 +111,15 @@ document.addEventListener("DOMContentLoaded", function () {
 					// wrapper.appendChild(glossaryElement);
 
 					const popup = document.createElement("div");
-					popup.id = `popup_${definition.term}_${index}`; // Add index to make the ID unique
+					popup.id = "definition_" + index; // Add index to make the ID unique
 					popup.className = "glossary-popup";
 					popup.setAttribute("role", "tooltip");
 					popup.setAttribute("aria-hidden", "true");
 
 					if (docLang && docLang.toLowerCase() === "fr") {
-						popup.innerHTML = `<p style="color:#fff;" class="popupText">Définition: ${definition.definition}</p>`;
+						popup.innerHTML = `<p style="color:#fff;" class="popupText">Définition<span class="sr-only"> de ${definition.term}</span> : ${definition.definition}</p>`;
 					} else {
-						popup.innerHTML = `<p style="color:#fff;" class="popupText">Definition: ${definition.definition}</p>`;
+						popup.innerHTML = `<p style="color:#fff;" class="popupText">Definition<span class="sr-only"> of ${definition.term}</span>: ${definition.definition}</p>`;
 					}
 					glossaryElement.parentNode.insertBefore(popup, glossaryElement.nextSibling)
 					// wrapper.appendChild(popup); // Append the popup element to the wrapper
