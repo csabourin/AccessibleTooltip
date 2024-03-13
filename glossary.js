@@ -169,6 +169,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
 		tooltip.addEventListener("mouseenter", function (event) {
 			clearTimeout(timeout);
+			activateESC(popup);
 			timeout = setTimeout(function () {				
 				popup.setAttribute("aria-hidden", "false");
 				updatePosition(tooltip, popup);
@@ -177,6 +178,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
 		tooltip.addEventListener("mouseleave", function () {
 			clearTimeout(timeout);
+			deactivateESC();
 			timeout = setTimeout(function () {
 				popup.setAttribute("aria-hidden", "true");
 			}, 350);
@@ -188,6 +190,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
 		popup.addEventListener("mouseleave", function () {
 			clearTimeout(timeout);
+			deactivateESC();
 			timeout = setTimeout(function () {
 				popup.setAttribute("aria-hidden", "true");
 			}, 350);
@@ -195,6 +198,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
 		tooltip.addEventListener("focus", function (event) {
 			clearTimeout(timeout);
+			activateESC(popup);
 			timeout = setTimeout(function () {
 				popup.setAttribute("aria-hidden", "false");
 				updatePosition(tooltip, popup);
@@ -203,6 +207,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
 		tooltip.addEventListener("blur", function () {
 			clearTimeout(timeout);
+			deactivateESC();
 			timeout = setTimeout(function () {
 				popup.setAttribute("aria-hidden", "true");
 			}, 350);
@@ -212,11 +217,49 @@ document.addEventListener("DOMContentLoaded", function () {
 			clearTimeout(timeout);
 			if (popup.getAttribute("aria-hidden") === "true") {
 				popup.setAttribute("aria-hidden", "false");
+				activateESC(popup);
 			} else {
 				popup.setAttribute("aria-hidden", "true");
+				deactivateESC();
 			}
 		});
 
 	}
 	document.head.appendChild(styleElement);
 });
+
+var popupRef;
+function activateESC(popup){
+	popupRef = popup;
+
+	if(document.querySelector(".modal.show .modal-dialog")){
+		document.querySelector(".modal.show .modal-dialog").addEventListener("keydown", modalHandler);
+	}
+	else{
+		document.addEventListener("keydown", ESCHandler);
+	}
+}
+
+function ESCHandler(evt){
+	if(evt.key == "Escape"){
+		popupRef.setAttribute("aria-hidden", "true");
+		deactivateESC();
+	}
+}
+
+function modalHandler(evt){
+	if(evt.key == "Escape"){
+		evt.preventDefault();
+		evt.stopPropagation();
+
+		ESCHandler(evt);
+	}
+}
+
+function deactivateESC(){
+	document.removeEventListener("keydown", ESCHandler);
+
+	if(document.querySelector(".modal.show .modal-dialog")){
+		document.querySelector(".modal.show .modal-dialog").removeEventListener("keydown", modalHandler);
+	}
+}
